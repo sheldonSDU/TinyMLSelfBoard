@@ -2,64 +2,78 @@
 /**
   ******************************************************************************
   * @file           : main.c
-  * @brief          : Main program body
-	* @Authors				: Sheldon Liu & Weijie Chen
+  * @brief          : Main program body for STM32H747 development board
+  * @authors        : Sheldon Liu & Weijie Chen
+  * @version        : V11.0
+  * @date           : 2025-10
   ******************************************************************************
-  * @attention V1.0 ~ V4.0 basic app
-	* @attention V5.0, Insert app from STM32H747 DISCO BSP
-	* @attention V6.0, Insert Cam Code with  Chatgpt
-	* @attention Don't forget the error of serial port tools!
+  * @attention 
+  * - V1.0~V4.0: Basic peripheral testing phase
+  * - V5.0: Integrated STM32H747 DISCO BSP applications
+  * - V6.0: Camera driver development with AI assistance
+  * - Note: Always verify serial port tool compatibility, Attention!
+  * 
+  * @copyright      : [Add copyright information if applicable]
+  ******************************************************************************
+  * Version History:
+  * 
+  * V1.0 (2024-12-01) - GPIO & UART Test
+  *   - USART1: Debug console with printf redefinition (completed 2025-01-05)
+  *   - USART3: Raspberry Pi Pico communication (requires TX/RX cross-connection)
+  *   - Implemented IT + IDLE + Double Ping Pong buffer for USART1
+  * 
+  * V2.0 (2025-01-06~2025-01-08) - SDRAM Test
+  *   - Address: 0xC0000000, Capacity: 32MB
+  *   - Configuration: 100MHz clock, CAS latency 3
+  *   - Test coverage: Word/Byte read/write operations
+  *   - Reference: https://blog.csdn.net/qq_45467083/article/details/109425825
+  *   - Note: MPU restrictions may interfere with SDRAM debugging operations
+  * 
+  * V3.0 (2025-01-09) - Power Management Test
+  *   - Configurable regulator voltages: 1.0V/1.1V/1.2V via __HAL_PWR_VOLTAGESCALING_CONFIG()
+  *   - Successfully verified INA3221 I2C communication with Raspberry Pi Pico
+  * 
+  * V4.0 - WIFI Module Test
+  *   - Command format: Terminate with "\r\n" (0x0d, 0x0a)
+  *   - Socket communication functionality validated
+  *   - Critical: PA0_C/PA1_C pin configuration required for UART4
+  *   - Reference: https://community.st.com/t5/stm32-mcus-products/subject-stm32h753zi-cannot-control-pc02-as-gpio-or-spi2-miso/td-p/655439
+  * 
+  * V5.0 - QSPI Flash Test
+  *   - Basic operations: ID read, chip erase, page read/write verified
+  *   - Requirement: GPIO pins must be configured for very high speed
+  *   - Future plan: Implement quad SPI mode
+  *   - Reference: https://www.waveshare.net/study/article-658-1.html
+  * 
+  * V6.0 - Camera Interface Test
+  *   - Device ID verified: ADDR_H=1C, ADDR_L=1D
+  *   - Reference: https://blog.csdn.net/qq_40500005/article/details/112055533
+  * 
+  * V7.0 - SAI PDM Microphone Test
+  *   - [Add specific implementation details when available]
+  * 
+  * V8.0 - (2025-08-01) Memory Performance Analysis  
+  *   - Tested read latency of DTCM, SRAM, and SDRAM
+  *   - Implemented cycle-accurate measurement using DWT counter
+  * 
+  * V9.0 - CMSIS-NN Integration
+  *   - Separated neural network implementations into nn.h/nn.c files
+  *   - Together with x-cube-ai in the future!
+  * 
+  * V10.0 - (2026-01-01) STM32-PICO Communication Framework
+  *   - Implemented high-speed UART communication with minimal protocol overhead
+  *   - Added cyclic test data transmission mechanism
+  * 
+  * V11.0 - (2026-02-01)MobileNet V1 Inference Test
+  *   - Optimized 27-layer CNN implementation using Weijie Chen library
+  *   - Achieved real-time inference performance on STM32H747
+  *   - Added detailed performance metrics and result visualization
 	*
+	* V12.0 -  Accelarator Component Enable 
 	*
-	* @note: V1.0 GPIO and UART Test (2024.12.1) [Weijie Chen & Sheldon Liu]
-	*				- USART1: For Debug Console	(dbg console?)
-	*         - printf redefine OK![Sheldon Liu  2025.1.5]
-	*					- 
-	*				- USART3: Connecting to Rasp Pico, - Swap Tx & Rx
-	*       - IT + IDLE + DOUBLE Ping Pong with USART1
-	*	@note: V2.0 SDRAM Test	(2025.1.6~2025.1.8) [Sheldon Liu]
-	*			  - ADDRESS 0xC000_0000
-	*				- Capacity: 32MB
-	*       - Clock:100Mhz, CAS:3
-	*       - Test Pattern: Word R/W &Byte R/W
-	*				- refer to : https://blog.csdn.net/qq_45467083/article/details/109425825
-  * @attention: MPU stops the writing to SDRAM which is started by the app!
-  *             For memory debugger, MPU make no sense.
-	*				
-	* @note: V3.0 Power Test
-	*        - internal regulator output voltage : 1.0V 1.1V 1.2V 
-	*          __HAL_PWR_VOLTAGESCALING_CONFIG(),Modify the value
-  *        - INA3221 IIC Test Passed with Raspberry Pico (2025.1.9) [Sheldon Liu]
-  *				 
-	*	@note: V4.0 WIFI Test 
-	*        - End of Command: "\r" 0x0d, "\n" 0x0a
-	*				 - Test with Socket Connection
-	*				 - !UART4 TX&RX pin PA0_C PA1_C should be 
-	*				 - refer to : https://community.st.com/t5/stm32-mcus-products/subject-stm32h753zi-cannot-control-pc02-as-gpio-or-spi2-miso/td-p/655439
-	*	
-  * @note: V5.0 QPSI Test
-	*        - Read ID OK
-	*        - GPIO should be very high speed
-	*        - Read &Write & Erase OK
-	*        - Quad Test in Future!
-	*        - refer to https://www.waveshare.net/study/article-658-1.html
-	* 
-	* @note: V6.0 Camera Test
-	*        - Read ID ： ADDR_H:1C  ADDR_L:1D
-	*        - refer to https://blog.csdn.net/qq_40500005/article/details/112055533
-	*
-	*
-	* @note: V7.0 SAI PDM Microphone Test
-	*
-	* @note: V8.0 Memory Performance Test 
-	*        - Test DTCM, SRAM, SDRAM read latency
-  *        - 
-  * @note: V9.0 CMSIS-NN 
-	*					- To distinguish between neural network and interface test cases, the neural network tests are conducted separately in the files nn.h and nn.c
-	*					- examples in nn.c
-	*         - 
   ******************************************************************************
   */
+/* USER CODE END Header */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
@@ -83,6 +97,10 @@
 #include "qspi_flash_drv.h"
 #include "microphone_sai_drv.h"
 #include "ov2640_dcmi_drv.h"
+// 新增模型推理依赖头文件
+#include "add_h/arm_math.h"
+#include "add_h/genModel.h"
+#include "add_h/image_data.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -97,17 +115,23 @@
 #endif
 
 /*Module Test Switch*/
-#define DBG_EXSDRAM_TEST 1
-#define DBG_WIFI_TEST 1
+#define DBG_EXSDRAM_TEST 0
+#define DBG_WIFI_TEST 0
 #define DBG_QSPIFLASH_TEST 1
-//#define DBG_CAMERADCMI_TEST 1
+#define DBG_CAMERADCMI_TEST 0
 //#define DBG_MICROPHONE_TEST 1
-#define DBG_MEMORY_LATENCY_TEST 1  /* 内存延迟测试开关 */
+#define DBG_MEMORY_LATENCY_TEST 0  /* 内存延迟测试开关 */
 
 /* 内存测试参数 */
 #define TEST_ITERATIONS 1000000    /* 测试迭代次数 */
 #define BUFFER_SIZE     1024       /* 测试缓冲区大小 */
 
+/*mobilenet v1 test*/
+#define DBG_MODEL_INFERENCE_TEST 1  /* 神经网络模型推理测试开关：1开启，0关闭 */
+/*STM32 TO PICO*/
+#define DBG_STM32_TO_PICO_TEST 1  // 1=启用发送，0=禁用发送
+
+void invoke_layers(void) ;
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -151,14 +175,17 @@ uint8_t frame_ready = 0;
 
 
 /* USER CODE END PFP */
-
+HAL_StatusTypeDef stm32_send_to_pico(uint8_t *data, uint8_t data_len);
+void stm32_to_pico_communication_task(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
 /*Redefine the function of printf(), USART1 is used for log*/
 __ASM(".global __use_no_semihosting\n\t");               
 struct FILE  { int handle; };     // 标准库需要的支持函数
+
 FILE __stdout;                           // FILE 在stdio.h文件
+
 void _sys_exit(int x) {x = x; }         // 定义_sys_exit()以避免使用半主机模式
 
 int fputc(int ch, FILE *f)               // 重定向fputc函数，使printf的输出，由fputc输出到UART,  这里使用串口1(USART1)
@@ -170,15 +197,57 @@ int fputc(int ch, FILE *f)               // 重定向fputc函数，使printf的�
     return ch;
 }
 
-/* USER CODE END 0 */
 
+/* Refer to d */
+
+#define USR_CC_RESET() \
+  do { \
+    __asm__ volatile("" ::: "memory"); \
+    *DWT_CYCCNT = 0; \
+    __asm__ volatile("" ::: "memory"); \
+  } while (0)
+
+
+#define USR_GET_CC_TIMESTAMP(x) \
+  do { \
+    __asm__ volatile("" ::: "memory"); \
+    x = (*(volatile unsigned int *) DWT_CYCCNT); \
+    __asm__ volatile("" ::: "memory"); \
+  } while (0)
+
+
+
+/* USER CODE END 0 */
+HAL_StatusTypeDef stm32_send_to_pico(uint8_t *data, uint8_t data_len) {
+    // 直接发送原始数据，跳过所有帧头/尾、CRC校验等封装逻辑
+    return HAL_UART_Transmit(&huart3, data, data_len, HAL_MAX_DELAY);
+}
+
+/**
+ * @brief STM32到PICO通信任务函数
+ * @note 每秒发送一次测试数据到PICO，可通过DBG_STM32_TO_PICO_TEST开关控制是否执行
+ */
+void stm32_to_pico_communication_task(void) {
+
+        char test_data[32] = {0};
+        sprintf(test_data, "STM32 2 PICO TEST");
+        
+        HAL_StatusTypeDef ret = stm32_send_to_pico((uint8_t*)test_data, strlen(test_data));
+        if (ret == HAL_OK) {
+            printf("Send to Pico: %s\n", test_data);
+        } else {
+            printf("Send to Pico Failed!\n");
+        }
+    
+}
 /**
   * @brief  The application entry point.
   * @retval int
   */
 int main(void)
 {
-
+	  SCB_EnableICache();  // 启用指令缓存 I-Cache
+	  SCB_EnableDCache();  // 启用数据缓存 D-Cache
   /* USER CODE BEGIN 1 */
   int32_t timeout;
 
@@ -190,6 +259,7 @@ int main(void)
   /* MPU Configuration--------------------------------------------------------*/
   MPU_Config();
 
+	/* To enable this module, CM4 code should be compiled and download*/
 /* USER CODE BEGIN Boot_Mode_Sequence_1 */
   /* Wait until CPU2 boots and enters in stop mode or timeout*/
 //  timeout = 0xFFFF;
@@ -254,8 +324,8 @@ Error_Handler();
 	
 	//USER_PDM_Filter_Init();
 	
-	//HAL_UARTEx_ReceiveToIdle_IT(&huart4,wifi_rx_tmp_buf,WIFI_TMP_RXBUFF_SIZE);
-	//HAL_UARTEx_ReceiveToIdle_IT(&huart1,dbg_rx_tmp_buf,DBG_TMP_RXBUFF_SIZE);
+	HAL_UARTEx_ReceiveToIdle_IT(&huart4,wifi_rx_tmp_buf,WIFI_TMP_RXBUFF_SIZE);
+	HAL_UARTEx_ReceiveToIdle_IT(&huart1,dbg_rx_tmp_buf,DBG_TMP_RXBUFF_SIZE);
 	
   /* USER CODE END 2 */
 
@@ -267,15 +337,16 @@ Error_Handler();
 	
 /****************V1.0   GPIO AND DBG USART ***********************/
 	Tri_LED_On(LED_B); // 打开RGB的蓝色灯
-	printf("Test Start!\n"); // 测试USART1,通过STLINK3的UART连接，同时测试重定向  
+  
+	printf("TinyML PLatform Start!\n"); // 测试USART1,通过STLINK3的UART连接，同时测试重定向  
 	
 	/****************Memory Latency Test***********************/
-#ifdef DBG_MEMORY_LATENCY_TEST
+#if DBG_MEMORY_LATENCY_TEST
 	InitDWT();
 	TestMemoryLatency();
 #endif
 /****************V2.0   SDRAM Test ***********************/
-#ifdef DBG_EXSDRAM_TEST	
+#if DBG_EXSDRAM_TEST	
 	/*Single Word and Single Byte Test*/
 	uint8_t write_byte_data = 0x55;
 	uint32_t write_word_data = 0x12345678;
@@ -295,7 +366,7 @@ Error_Handler();
 	}
 		
 	//uint32_t buffer[EXT_SDRAM_SIZE];
-	// 假设已经初始化了buffer数组
+	//假设已经初始化了buffer数组
 	for(int i = 0; i < EXT_SDRAM_SIZE; i++)
 	{
     *(volatile uint8_t*)(EXT_SDRAM_ADDR + i) = i;
@@ -340,13 +411,13 @@ Error_Handler();
 	* Refer to : https://aithinker-combo-guide.readthedocs.io/en/latest/docs/command-set/Wi-Fi_AT_Commands.html#at-wjap-ap
 	* Step1: AT+HELP 查看帮助
 	* Step2: AT+WSCAN 扫描WIFI特点名称
-	* Step3: AT+WJAP=MIMIMI,208208208. 连接热点
+	* Step3: AT+WJAP=MMSysLab,123459876//MIMIMI,208208208. 连接热点
 	* Step4: AT+SOCKET=4,192.168.123.105,1234 建立Socket 通信,获取conID
 	* Step5: AT+SOCKETSENDLINE=conID,10,1234567890 , 发?10字节的shu?
 	* Step6: AT+SOCKETREAD=conID  读取接收的数?
 	* 
 	*/
-#ifdef DBG_WIFI_TEST
+#if DBG_WIFI_TEST
 	
 	//int32_t command_buff_size = 100;
 	uint8_t at_command_buf[WIFI_RX_BUFFER_SIZE];
@@ -370,12 +441,12 @@ Error_Handler();
 	
 /****************V5.0   QSPI Test ***********************/	
 
-#ifdef DBG_QSPIFLASH_TEST
+#if DBG_QSPIFLASH_TEST
 	uint8_t  qspistatus; //
 	//qspistatus = W25Q256JVFIQ_ReadStatus();
 	W25Q256JVFIQ_EraseSector(0x100000); //擦写测试
 	
-	// 示例：向地址0x000000写入数据
+	// 示例：向地址0x000000写入数据								
    uint8_t flash_write_data[] = "Hello, hengheng!";
    W25Q256JVFIQ_PageWrite(0x100000, flash_write_data, sizeof(flash_write_data));
    
@@ -403,19 +474,23 @@ Error_Handler();
 #endif // DBG_QSPIFLASH_TEST	
 
 
+/****************V7.0   CAMERA Test ***********************/
+/*
+*  (1)Camera Config Interface : 
+*  (2)Camera Data Interface:   
+*/
 	 
-	 
-#ifdef DBG_CAMERADCMI_TEST	
+#if DBG_CAMERADCMI_TEST	
 	 /*2025.3.18 Cameraid ok!*/
 	 OV2640_Init();
 	 OV2640_EnableAutoExposure(); 
-	 //Start_Capture();
+	 Start_Capture();
 #endif //DBG_CAMERADCMI_TEST
 	 
 	 
-/****************V6.0   MICROPHONE Test ***********************/
+/****************V8.0   MICROPHONE Test ***********************/
 
-#ifdef  DBG_MICROPHONE_TEST 
+#if  DBG_MICROPHONE_TEST 
 	 Start_PDM_Receive();
 	 HAL_Delay(10);
 	 Process_PDM_To_PCM();
@@ -423,26 +498,244 @@ Error_Handler();
 	 
 	 
 	 
-/* Default forever loop */	
-  while (1)
-  {
-    /* USER CODE END WHILE */
-//		if (__HAL_DCMI_GET_FLAG(&hdcmi, DCMI_FLAG_FRAMERI)) {
-//            /* 清除帧完成标志 */
-//            __HAL_DCMI_CLEAR_FLAG(&hdcmi, DCMI_FLAG_FRAMERI);
-//            
-//            /* 通过USART发送帧数据 */
-//            HAL_UART_Transmit(&huart1, (uint8_t*)frame_buffer, FRAME_SIZE, 1000);
-//      }
-//    /* USER CODE BEGIN 3 */
-//		//Start_PDM_Receive();
+/****************V9.0 CMSIS-NN ***********************/
+// 原CMSIS-NN注释保留
+/****************V10.0 STM32 TO PICO ***********************/
+  /****************STM32到PICO通信任务***********************/
+#ifdef DBG_STM32_TO_PICO_TEST
+  stm32_to_pico_communication_task();
+#endif
+/****************V11.0  Neural Network Model Inference Test***********************/
+#if DBG_MODEL_INFERENCE_TEST
+	//HAL_Delay(500);
 
-		
-		
-  }
+    uint32_t start, end;
+    printf("\n=== Neural Network Model Inference Test ===\n");
+    
+    // 记录推理开始时间
+		start = HAL_GetTick();
+		printf("Start Time: %d ms\n", start);
+    //start = HAL_GetTick();
+    
+
+    // 调用模型推理核心函数
+    invoke_layers();
+    
+    // 记录推理结束时间
+    end = HAL_GetTick();
+    printf("End Time: %d ms\n", end);
+
+    // 打印推理耗时
+    printf("Inference Time: %d ms\n", end - start);
+    
+    // 打印模型输出结果（打印前100个元素，按10个/行格式化）
+    printf("Model Output (first 100 elements):\n");
+    for (int i = 0; i < 100; i++) {
+        printf("%-5d", buffer1[i]);
+        if ((i + 1) % 10 == 0) {
+            printf("\n");  // 每10个元素换行，提升可读性
+        }
+    }
+    printf("\n=== Model Inference Test Complete ===\n");
+#endif // DBG_MODEL_INFERENCE_TEST
+
+/* Default forever loop */	
+while (1)
+{	
+		HAL_Delay(1000);
+    Tri_LED_On(LED_G);
+    HAL_Delay(1000);
+    Tri_LED_Off(LED_G);
+		//printf("hello,Test");
+    HAL_UART_Transmit(&huart1,(uint8_t *)"hello,Test",10,HAL_MAX_DELAY);
+}
   /* USER CODE END 3 */
 }
+/* USER CODE BEGIN 4 */
 
+/**
+  * @brief  神经网络模型推理核心函数
+  * @note   包含27层卷积与深度可分离卷积运算，基于CMSIS-NN优化实现
+  */
+arm_status
+arm_convolve_HWC_u8_u4_u4_icn(const uint8_t *Im_in,
+                    const uint16_t dim_im_in,
+                    const uint16_t ch_im_in,
+                    const uint8_t *wt,
+                    const uint16_t ch_im_out,
+                    const uint16_t dim_kernel,
+                    const uint8_t left_padding,
+                    const uint8_t right_padding,
+                    const uint8_t top_padding,
+                    const uint8_t bottom_padding,
+                    const uint16_t stride,
+                    const int32_t *bias,
+                    uint8_t *Im_out,
+                    const uint16_t dim_im_out,
+                    const uint8_t z_in,
+                    const uint8_t z_wt,
+                    const uint8_t z_out,
+                    const int32_t *m_zero,
+                    const int8_t *n_zero,
+                    int16_t * bufferA,
+                    uint8_t *bufferB);
+arm_status
+arm_depthwise_separable_conv_HWC_u4_u4_u4_icn(const uint8_t * Im_in,
+                        const uint16_t dim_im_in,
+                        const uint16_t ch_im_in,
+                        const uint8_t * wt,
+                        const uint16_t ch_im_out,
+                        const uint16_t dim_kernel,
+                        const uint8_t left_padding,
+                        const uint8_t right_padding,
+                        const uint8_t top_padding,
+                        const uint8_t bottom_padding,
+                        const uint16_t stride,
+                        const int32_t * bias,
+                        uint8_t * Im_out,
+                        const uint16_t dim_im_out,
+                        const uint8_t z_in,
+                        const uint8_t z_wt,
+                        const uint8_t z_out,
+                        const int32_t *m_zero,
+                        const int8_t *n_zero,
+                        int16_t * bufferA,
+                        uint8_t * bufferB);
+arm_status
+arm_convolve_HWC_u4_u4_u4_icn(const uint8_t *Im_in,
+                    const uint16_t dim_im_in,
+                    const uint16_t ch_im_in,
+                    const uint8_t *wt,
+                    const uint16_t ch_im_out,
+                    const uint16_t dim_kernel,
+                    const uint8_t left_padding,
+                    const uint8_t right_padding,
+                    const uint8_t top_padding,
+                    const uint8_t bottom_padding,
+                    const uint16_t stride,
+                    const int32_t *bias,
+                    uint8_t *Im_out,
+                    const uint16_t dim_im_out,
+                    const uint8_t z_in,
+                    const uint8_t z_wt,
+                    const uint8_t z_out,
+                    const int32_t *m_zero,
+                    const int8_t *n_zero,
+                    int16_t * bufferA,
+                    uint8_t *bufferB);
+void invoke_layers(void) {
+	//HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_SET);
+	//HAL_Delay(500);
+  // Layer 0 convolution
+  arm_convolve_HWC_u8_u4_u4_icn( 
+		  input_image, 160, 4, WEIGHT_0, 8, 3, 1, 1, 1, 1, 2, BIAS_0, buffer1, 80, 0, Z_W_0, 0, M_ZERO_0, N_ZERO_0, bufferA, bufferB);
+  //HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_RESET);
+  // Layer 1 depthwise convolution
+   arm_depthwise_separable_conv_HWC_u4_u4_u4_icn(
+     buffer1, 80, 8, WEIGHT_1, 8, 3, 1, 1, 1, 1, 1, BIAS_1, buffer0, 80, 0, Z_W_1, 0, M_ZERO_1, N_ZERO_1, bufferA, bufferB);
+//HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_SET);
+   // Layer 2 convolution
+   arm_convolve_HWC_u4_u4_u4_icn(
+     buffer0, 80, 8, WEIGHT_2, 16, 1, 0, 0, 0, 0, 1, BIAS_2, buffer1, 80, 0, Z_W_2, 0, M_ZERO_2, N_ZERO_2, bufferA, bufferB);
+//HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_RESET);
+   // Layer 3 depthwise convolution
+   arm_depthwise_separable_conv_HWC_u4_u4_u4_icn(
+     buffer1, 80, 16, WEIGHT_3, 16, 3, 1, 1, 1, 1, 2, BIAS_3, buffer0, 40, 0, Z_W_3, 0, M_ZERO_3, N_ZERO_3, bufferA, bufferB);
+HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_SET);
+   // Layer 4 convolution
+   arm_convolve_HWC_u4_u4_u4_icn(
+     buffer0, 40, 16, WEIGHT_4, 32, 1, 0, 0, 0, 0, 1, BIAS_4, buffer1, 40, 0, Z_W_4, 0, M_ZERO_4, N_ZERO_4, bufferA, bufferB);
+HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_RESET);
+   // Layer 5 depthwise convolution
+   arm_depthwise_separable_conv_HWC_u4_u4_u4_icn(
+     buffer1, 40, 32, WEIGHT_5, 32, 3, 1, 1, 1, 1, 1, BIAS_5, buffer0, 40, 0, Z_W_5, 0, M_ZERO_5, N_ZERO_5, bufferA, bufferB);
+
+   // Layer 6 convolution
+   arm_convolve_HWC_u4_u4_u4_icn(
+     buffer0, 40, 32, WEIGHT_6, 32, 1, 0, 0, 0, 0, 1, BIAS_6, buffer1, 40, 0, Z_W_6, 0, M_ZERO_6, N_ZERO_6, bufferA, bufferB);
+
+   // Layer 7 depthwise convolution
+   arm_depthwise_separable_conv_HWC_u4_u4_u4_icn(
+     buffer1, 40, 32, WEIGHT_7, 32, 3, 1, 1, 1, 1, 2, BIAS_7, buffer0, 20, 0, Z_W_7, 0, M_ZERO_7, N_ZERO_7, bufferA, bufferB);
+
+   // Layer 8 convolution
+   arm_convolve_HWC_u4_u4_u4_icn(
+     buffer0, 20, 32, WEIGHT_8, 64, 1, 0, 0, 0, 0, 1, BIAS_8, buffer1, 20, 0, Z_W_8, 0, M_ZERO_8, N_ZERO_8, bufferA, bufferB);
+
+   // Layer 9 depthwise convolution
+   arm_depthwise_separable_conv_HWC_u4_u4_u4_icn(
+     buffer1, 20, 64, WEIGHT_9, 64, 3, 1, 1, 1, 1, 1, BIAS_9, buffer0, 20, 0, Z_W_9, 0, M_ZERO_9, N_ZERO_9, bufferA, bufferB);
+
+   // Layer 10 convolution
+   arm_convolve_HWC_u4_u4_u4_icn(
+     buffer0, 20, 64, WEIGHT_10, 64, 1, 0, 0, 0, 0, 1, BIAS_10, buffer1, 20, 0, Z_W_10, 0, M_ZERO_10, N_ZERO_10, bufferA, bufferB);
+
+   // Layer 11 depthwise convolution
+   arm_depthwise_separable_conv_HWC_u4_u4_u4_icn(
+     buffer1, 20, 64, WEIGHT_11, 64, 3, 1, 1, 1, 1, 2, BIAS_11, buffer0, 10, 0, Z_W_11, 0, M_ZERO_11, N_ZERO_11, bufferA, bufferB);
+
+   // Layer 12 convolution
+   arm_convolve_HWC_u4_u4_u4_icn(
+     buffer0, 10, 64, WEIGHT_12, 128, 1, 0, 0, 0, 0, 1, BIAS_12, buffer1, 10, 0, Z_W_12, 0, M_ZERO_12, N_ZERO_12, bufferA, bufferB);
+
+   // Layer 13 depthwise convolution
+   arm_depthwise_separable_conv_HWC_u4_u4_u4_icn(
+     buffer1, 10, 128, WEIGHT_13, 128, 3, 1, 1, 1, 1, 1, BIAS_13, buffer0, 10, 0, Z_W_13, 0, M_ZERO_13, N_ZERO_13, bufferA, bufferB);
+
+   // Layer 14 convolution
+   arm_convolve_HWC_u4_u4_u4_icn(
+     buffer0, 10, 128, WEIGHT_14, 128, 1, 0, 0, 0, 0, 1, BIAS_14, buffer1, 10, 0, Z_W_14, 0, M_ZERO_14, N_ZERO_14, bufferA, bufferB);
+
+   // Layer 15 depthwise convolution
+   arm_depthwise_separable_conv_HWC_u4_u4_u4_icn(
+     buffer1, 10, 128, WEIGHT_15, 128, 3, 1, 1, 1, 1, 1, BIAS_15, buffer0, 10, 0, Z_W_15, 0, M_ZERO_15, N_ZERO_15, bufferA, bufferB);
+
+   // Layer 16 convolution
+   arm_convolve_HWC_u4_u4_u4_icn(
+     buffer0, 10, 128, WEIGHT_16, 128, 1, 0, 0, 0, 0, 1, BIAS_16, buffer1, 10, 0, Z_W_16, 0, M_ZERO_16, N_ZERO_16, bufferA, bufferB);
+
+   // Layer 17 depthwise convolution
+   arm_depthwise_separable_conv_HWC_u4_u4_u4_icn(
+     buffer1, 10, 128, WEIGHT_17, 128, 3, 1, 1, 1, 1, 1, BIAS_17, buffer0, 10, 0, Z_W_17, 0, M_ZERO_17, N_ZERO_17, bufferA, bufferB);
+
+   // Layer 18 convolution
+   arm_convolve_HWC_u4_u4_u4_icn(
+     buffer0, 10, 128, WEIGHT_18, 128, 1, 0, 0, 0, 0, 1, BIAS_18, buffer1, 10, 0, Z_W_18, 0, M_ZERO_18, N_ZERO_18, bufferA, bufferB);
+
+   // Layer 19 depthwise convolution
+   arm_depthwise_separable_conv_HWC_u4_u4_u4_icn(
+     buffer1, 10, 128, WEIGHT_19, 128, 3, 1, 1, 1, 1, 1, BIAS_19, buffer0, 10, 0, Z_W_19, 0, M_ZERO_19, N_ZERO_19, bufferA, bufferB);
+
+   // Layer 20 convolution
+   arm_convolve_HWC_u4_u4_u4_icn(
+     buffer0, 10, 128, WEIGHT_20, 128, 1, 0, 0, 0, 0, 1, BIAS_20, buffer1, 10, 0, Z_W_20, 0, M_ZERO_20, N_ZERO_20, bufferA, bufferB);
+
+   // Layer 21 depthwise convolution
+   arm_depthwise_separable_conv_HWC_u4_u4_u4_icn(
+     buffer1, 10, 128, WEIGHT_21, 128, 3, 1, 1, 1, 1, 1, BIAS_21, buffer0, 10, 0, Z_W_21, 0, M_ZERO_21, N_ZERO_21, bufferA, bufferB);
+
+   // Layer 22 convolution
+   arm_convolve_HWC_u4_u4_u4_icn(
+     buffer0, 10, 128, WEIGHT_22, 128, 1, 0, 0, 0, 0, 1, BIAS_22, buffer1, 10, 0, Z_W_22, 0, M_ZERO_22, N_ZERO_22, bufferA, bufferB);
+
+   // Layer 23 depthwise convolution
+   arm_depthwise_separable_conv_HWC_u4_u4_u4_icn(
+     buffer1, 10, 128, WEIGHT_23, 128, 3, 1, 1, 1, 1, 2, BIAS_23, buffer0, 5, 0, Z_W_23, 0, M_ZERO_23, N_ZERO_23, bufferA, bufferB);
+
+   // Layer 24 convolution
+   arm_convolve_HWC_u4_u4_u4_icn(
+     buffer0, 5, 128, WEIGHT_24, 256, 1, 0, 0, 0, 0, 1, BIAS_24, buffer1, 5, 0, Z_W_24, 0, M_ZERO_24, N_ZERO_24, bufferA, bufferB);
+
+   // Layer 25 depthwise convolution
+   arm_depthwise_separable_conv_HWC_u4_u4_u4_icn(
+     buffer1, 5, 256, WEIGHT_25, 256, 3, 1, 1, 1, 1, 1, BIAS_25, buffer0, 5, 0, Z_W_25, 0, M_ZERO_25, N_ZERO_25, bufferA, bufferB);
+
+   // Layer 26 convolution
+   arm_convolve_HWC_u4_u4_u4_icn(
+     buffer0, 5, 256, WEIGHT_26, 256, 1, 0, 0, 0, 0, 1, BIAS_26, buffer1, 5, 0, Z_W_26, 0, M_ZERO_26, N_ZERO_26, bufferA, bufferB);
+}
+
+/* USER CODE END 4 */
 /**
   * @brief System Clock Configuration
   * @retval None
