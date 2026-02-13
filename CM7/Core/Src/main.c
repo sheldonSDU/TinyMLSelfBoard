@@ -46,7 +46,7 @@
   *   - Reference: https://www.waveshare.net/study/article-658-1.html
   * 
   * V6.0 - Camera Interface Test
-  *   - Device ID verified: ADDR_H=1C, ADDR_L=1D
+  *   - Device ID verified: 0x5640
   *   - Reference: https://blog.csdn.net/qq_40500005/article/details/112055533
   * 
   * V7.0 - SAI PDM Microphone Test
@@ -74,7 +74,6 @@
   ******************************************************************************
   */
 /* USER CODE END Header */
-/* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "dcmi.h"
@@ -85,18 +84,17 @@
 #include "usart.h"
 #include "gpio.h"
 #include "fmc.h"
-#include "stm32h7xx_hal_dcmi.h"
 
-#include "arm_nnfunctions.h"
-#include "arm_math.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <string.h>
 #include <stdio.h>
+/*  */
 #include "sdram_fmc_drv.h"
 #include "qspi_flash_drv.h"
 #include "microphone_sai_drv.h"
-#include "ov2640_dcmi_drv.h"
+#include "ov5640_dcmi_drv.h"
+#include "stm32_pico_uart_drv.h"
 // 新增模型推理依赖头文件
 #include "add_h/arm_math.h"
 #include "add_h/genModel.h"
@@ -117,10 +115,16 @@
 /*Module Test Switch*/
 #define DBG_EXSDRAM_TEST 0
 #define DBG_WIFI_TEST 0
-#define DBG_QSPIFLASH_TEST 1
-#define DBG_CAMERADCMI_TEST 0
-//#define DBG_MICROPHONE_TEST 1
+#define DBG_QSPIFLASH_TEST 0
+#define DBG_CAMERADCMI_TEST 1
+#define DBG_MICROPHONE_TEST 0
 #define DBG_MEMORY_LATENCY_TEST 0  /* 内存延迟测试开关 */
+
+
+#define DBG_MODEL_INFERENCE_TEST 1  /* 神经网络模型推理测试开关：1开启，0关闭 */
+
+#define DBG_STM32_TO_PICO_TEST 1  /*STM32 TO PICO 1=启用发送，0=禁用发送 */
+
 
 /* 内存测试参数 */
 #define TEST_ITERATIONS 1000000    /* 测试迭代次数 */
@@ -175,8 +179,7 @@ uint8_t frame_ready = 0;
 
 
 /* USER CODE END PFP */
-HAL_StatusTypeDef stm32_send_to_pico(uint8_t *data, uint8_t data_len);
-void stm32_to_pico_communication_task(void);
+
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
@@ -198,7 +201,7 @@ int fputc(int ch, FILE *f)               // 重定向fputc函数，使printf的�
 }
 
 
-/* Refer to d */
+/* Refer to Cmix-nn */
 
 #define USR_CC_RESET() \
   do { \
@@ -216,41 +219,24 @@ int fputc(int ch, FILE *f)               // 重定向fputc函数，使printf的�
   } while (0)
 
 
+	
+
+	
 
 /* USER CODE END 0 */
-HAL_StatusTypeDef stm32_send_to_pico(uint8_t *data, uint8_t data_len) {
-    // 直接发送原始数据，跳过所有帧头/尾、CRC校验等封装逻辑
-    return HAL_UART_Transmit(&huart3, data, data_len, HAL_MAX_DELAY);
-}
 
 /**
- * @brief STM32到PICO通信任务函数
- * @note 每秒发送一次测试数据到PICO，可通过DBG_STM32_TO_PICO_TEST开关控制是否执行
- */
-void stm32_to_pico_communication_task(void) {
-
-        char test_data[32] = {0};
-        sprintf(test_data, "STM32 2 PICO TEST");
-        
-        HAL_StatusTypeDef ret = stm32_send_to_pico((uint8_t*)test_data, strlen(test_data));
-        if (ret == HAL_OK) {
-            printf("Send to Pico: %s\n", test_data);
-        } else {
-            printf("Send to Pico Failed!\n");
-        }
-    
-}
-/**
-  * @brief  The application entry point.
+  * @brief  The appllication entry point.
   * @retval int
   */
 int main(void)
 {
-	  SCB_EnableICache();  // 启用指令缓存 I-Cache
-	  SCB_EnableDCache();  // 启用数据缓存 D-Cache
+
   /* USER CODE BEGIN 1 */
   int32_t timeout;
-
+	int32_t ret;
+	SCB_EnableICache();  // 启用指令缓存 I-Cache
+	SCB_EnableDCache();  // 启用数据缓存 D-Cache
   /* USER CODE END 1 */
 /* USER CODE BEGIN Boot_Mode_Sequence_0 */
 /**************************  Initlization  ********************************/
@@ -259,7 +245,6 @@ int main(void)
   /* MPU Configuration--------------------------------------------------------*/
   MPU_Config();
 
-	/* To enable this module, CM4 code should be compiled and download*/
 /* USER CODE BEGIN Boot_Mode_Sequence_1 */
   /* Wait until CPU2 boots and enters in stop mode or timeout*/
 //  timeout = 0xFFFF;
@@ -290,12 +275,12 @@ HAL_HSEM_FastTake(HSEM_ID_0);
 /*Release HSEM in order to notify the CPU2(CM4)*/
 HAL_HSEM_Release(HSEM_ID_0,0);
 /* wait until CPU2 wakes up from stop mode */
-timeout = 0xFFFF;
-while((__HAL_RCC_GET_FLAG(RCC_FLAG_D2CKRDY) == RESET) && (timeout-- > 0));
-if ( timeout < 0 )
-{
-Error_Handler();
-}
+//timeout = 0xFFFF;
+//while((__HAL_RCC_GET_FLAG(RCC_FLAG_D2CKRDY) == RESET) && (timeout-- > 0));
+//if ( timeout < 0 )
+//{
+//Error_Handler();
+//}
 /* USER CODE END Boot_Mode_Sequence_2 */
 
   /* USER CODE BEGIN SysInit */
@@ -315,8 +300,8 @@ Error_Handler();
   MX_I2C1_Init();
   MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
-
-/* @note: Key Issues PA0_C and PA1_C */
+	
+/* @note: Key Issues PA0_C and PA1_C , for uart3*/
 	HAL_SYSCFG_AnalogSwitchConfig(SYSCFG_SWITCH_PA0, SYSCFG_SWITCH_PA0_CLOSE);
 	HAL_SYSCFG_AnalogSwitchConfig(SYSCFG_SWITCH_PA1, SYSCFG_SWITCH_PA1_CLOSE);
 	Tri_Color_LED_Init(); 
@@ -327,13 +312,9 @@ Error_Handler();
 	HAL_UARTEx_ReceiveToIdle_IT(&huart4,wifi_rx_tmp_buf,WIFI_TMP_RXBUFF_SIZE);
 	HAL_UARTEx_ReceiveToIdle_IT(&huart1,dbg_rx_tmp_buf,DBG_TMP_RXBUFF_SIZE);
 	
-  /* USER CODE END 2 */
-
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
 	
 	
-/***************************** Module Test***********************/	
+	/***************************** Module Test***********************/	
 	
 /****************V1.0   GPIO AND DBG USART ***********************/
 	Tri_LED_On(LED_B); // 打开RGB的蓝色灯
@@ -482,9 +463,10 @@ Error_Handler();
 	 
 #if DBG_CAMERADCMI_TEST	
 	 /*2025.3.18 Cameraid ok!*/
-	 OV2640_Init();
-	 OV2640_EnableAutoExposure(); 
-	 Start_Capture();
+	 printf("------------Start Camera Test ------------------");
+	 ret = CAM_Init(CAM_R160x120,CAM_PF_RGB565);
+	// printf("CAMERA ID is %u",
+//Start_Capture();
 #endif //DBG_CAMERADCMI_TEST
 	 
 	 
@@ -538,20 +520,92 @@ Error_Handler();
     }
     printf("\n=== Model Inference Test Complete ===\n");
 #endif // DBG_MODEL_INFERENCE_TEST
+	
+	
+  /* USER CODE END 2 */
 
-/* Default forever loop */	
-while (1)
-{	
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
+  while (1)
+  {
+    /* USER CODE END WHILE */
+
+    /* USER CODE BEGIN 3 */
+		
+		printf(" --- Platform is running ---- \r\n");
 		HAL_Delay(1000);
-    Tri_LED_On(LED_G);
-    HAL_Delay(1000);
-    Tri_LED_Off(LED_G);
-		//printf("hello,Test");
-    HAL_UART_Transmit(&huart1,(uint8_t *)"hello,Test",10,HAL_MAX_DELAY);
-}
+		Tri_LED_On(LED_B);
+		HAL_Delay(1000);
+		Tri_LED_Off(LED_B);
+  }
   /* USER CODE END 3 */
 }
+
+/**
+  * @brief System Clock Configuration
+  * @retval None
+  */
+void SystemClock_Config(void)
+{
+  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+
+  /** Supply configuration update enable
+  */
+  HAL_PWREx_ConfigSupply(PWR_DIRECT_SMPS_SUPPLY);
+
+  /** Configure the main internal regulator output voltage
+  */
+  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+
+  while(!__HAL_PWR_GET_FLAG(PWR_FLAG_VOSRDY)) {}
+
+  /** Initializes the RCC Oscillators according to the specified parameters
+  * in the RCC_OscInitTypeDef structure.
+  */
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+  RCC_OscInitStruct.HSIState = RCC_HSI_DIV1;
+  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
+  RCC_OscInitStruct.PLL.PLLM = 4;
+  RCC_OscInitStruct.PLL.PLLN = 50;
+  RCC_OscInitStruct.PLL.PLLP = 2;
+  RCC_OscInitStruct.PLL.PLLQ = 2;
+  RCC_OscInitStruct.PLL.PLLR = 2;
+  RCC_OscInitStruct.PLL.PLLRGE = RCC_PLL1VCIRANGE_3;
+  RCC_OscInitStruct.PLL.PLLVCOSEL = RCC_PLL1VCOWIDE;
+  RCC_OscInitStruct.PLL.PLLFRACN = 0;
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Initializes the CPU, AHB and APB buses clocks
+  */
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2
+                              |RCC_CLOCKTYPE_D3PCLK1|RCC_CLOCKTYPE_D1PCLK1;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.SYSCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_HCLK_DIV2;
+  RCC_ClkInitStruct.APB3CLKDivider = RCC_APB3_DIV2;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_APB1_DIV2;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_APB2_DIV2;
+  RCC_ClkInitStruct.APB4CLKDivider = RCC_APB4_DIV2;
+
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
 /* USER CODE BEGIN 4 */
+
+
+
+
+
 
 /**
   * @brief  神经网络模型推理核心函数
@@ -734,201 +788,6 @@ HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_RESET);
    arm_convolve_HWC_u4_u4_u4_icn(
      buffer0, 5, 256, WEIGHT_26, 256, 1, 0, 0, 0, 0, 1, BIAS_26, buffer1, 5, 0, Z_W_26, 0, M_ZERO_26, N_ZERO_26, bufferA, bufferB);
 }
-
-/* USER CODE END 4 */
-/**
-  * @brief System Clock Configuration
-  * @retval None
-  */
-void SystemClock_Config(void)
-{
-  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-
-  /** Supply configuration update enable
-  */
-  HAL_PWREx_ConfigSupply(PWR_DIRECT_SMPS_SUPPLY);
-
-  /** Configure the main internal regulator output voltage
-  */
-  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
-
-  while(!__HAL_PWR_GET_FLAG(PWR_FLAG_VOSRDY)) {}
-
-  /** Initializes the RCC Oscillators according to the specified parameters
-  * in the RCC_OscInitTypeDef structure.
-  */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
-  RCC_OscInitStruct.HSIState = RCC_HSI_DIV1;
-  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLM = 4;
-  RCC_OscInitStruct.PLL.PLLN = 50;
-  RCC_OscInitStruct.PLL.PLLP = 2;
-  RCC_OscInitStruct.PLL.PLLQ = 2;
-  RCC_OscInitStruct.PLL.PLLR = 2;
-  RCC_OscInitStruct.PLL.PLLRGE = RCC_PLL1VCIRANGE_3;
-  RCC_OscInitStruct.PLL.PLLVCOSEL = RCC_PLL1VCOWIDE;
-  RCC_OscInitStruct.PLL.PLLFRACN = 0;
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
-  /** Initializes the CPU, AHB and APB buses clocks
-  */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2
-                              |RCC_CLOCKTYPE_D3PCLK1|RCC_CLOCKTYPE_D1PCLK1;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  RCC_ClkInitStruct.SYSCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_HCLK_DIV2;
-  RCC_ClkInitStruct.APB3CLKDivider = RCC_APB3_DIV2;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_APB1_DIV2;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_APB2_DIV2;
-  RCC_ClkInitStruct.APB4CLKDivider = RCC_APB4_DIV2;
-
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-}
-
-/* USER CODE BEGIN 4 */
-
-/**
-  * @brief  初始化DWT寄存器用于精确计时，由TRAE IDE协助生成
-  * @retval None
-	* @date 2025.10
-  */
-void InitDWT(void)
-{
-    /* 使能DWT外设 */
-    CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
-    /* 重置计数器 */
-    DWT->CYCCNT = 0;
-    /* 使能计数器 */
-    DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
-}
-
-/**
-  * @brief  获取当前DWT计数器值
-  * @retval 当前CPU周期计数
-  */
-uint32_t GetDWT_CycleCount(void)
-{
-    return DWT->CYCCNT;
-}
-
-/**
-  * @brief  测试DTCM SRAM和SDRAM的读取延迟
-  * @retval None
-  * @note: 测试DTCM SRAM和SDRAM的读取延迟，分别在DTCM和SDRAM中分配内存，测试读取延迟
-    -在DTCM中分配内存 (DTCM通常在0x20000000地址开始) 
-    -在SDRAM中分配内存 (根据代码中的SDRAM测试，SDRAM地址为EXT_SDRAM_ADDR)
-  * @date 2025.10
-  */
-volatile uint32_t dtcm_buffer[BUFFER_SIZE] __attribute__((section(".ARM.__at_0x20000000")));
-volatile uint32_t sram_buffer[BUFFER_SIZE] __attribute__((section(".ARM.__at_0x24030000")));
-volatile uint32_t *sdram_buffer = (volatile uint32_t *)EXT_SDRAM_ADDR;
-void TestMemoryLatency(void)
-{
-    /* 在DTCM中分配内存 (DTCM通常在0x20000000地址开始) */    
-    /* 在SDRAM中分配内存 (根据代码中的SDRAM测试，SDRAM地址为EXT_SDRAM_ADDR) */
-    
-    uint32_t start_cycle, end_cycle;
-    uint64_t total_dtcm_cycles = 0;
-    uint64_t total_sram_cycles = 0;
-    uint64_t total_sdram_cycles = 0;
-    uint32_t dummy = 0;  // 用于避免编译器优化掉读取操作
-    
-    printf("\n=== Memory Latency Test Start ===\n");
-    
-    /* 初始化缓冲区数据 */
-    printf("Initializing buffers...\n");
-    for (int i = 0; i < BUFFER_SIZE; i++)
-    {
-        dtcm_buffer[i] = i;
-        sram_buffer[i] = i;
-        sdram_buffer[i] = i;
-    }
-    
-    /* 预热缓存 */
-    for (int i = 0; i < BUFFER_SIZE; i++)
-    {
-        dummy += dtcm_buffer[i];
-        dummy += sram_buffer[i];
-        dummy += sdram_buffer[i];
-    }
-    
-    /* 测试DTCM读取延迟 */
-    printf("Testing DTCM read latency...\n");
-    for (int iter = 0; iter < TEST_ITERATIONS; iter++)
-    {
-        int index = iter % BUFFER_SIZE;
-        start_cycle = GetDWT_CycleCount();
-        dummy = dtcm_buffer[index];  // 读取DTCM中的数据
-        end_cycle = GetDWT_CycleCount();
-        total_dtcm_cycles += (end_cycle - start_cycle);
-    }
-    /* 测试SRAM读取延迟 */
-    printf("Testing SRAM read latency...");
-        for (int iter = 0; iter < TEST_ITERATIONS; iter++)
-    {
-        int index = iter % BUFFER_SIZE;
-        start_cycle = GetDWT_CycleCount();
-        dummy = sram_buffer[index];  // 读取SRAM中的数据
-        end_cycle = GetDWT_CycleCount();
-        total_sram_cycles += (end_cycle - start_cycle);
-    }
-
-
-    /* 测试SDRAM读取延迟 */
-    printf("Testing SDRAM read latency...\n");
-    for (int iter = 0; iter < TEST_ITERATIONS; iter++)
-    {
-        int index = iter % BUFFER_SIZE;
-        start_cycle = GetDWT_CycleCount();
-        dummy = sdram_buffer[index];  // 读取SDRAM中的数据
-        end_cycle = GetDWT_CycleCount();
-        total_sdram_cycles += (end_cycle - start_cycle);
-    }
-    
-    /* 计算平均延迟 */
-    double avg_dtcm_cycles = (double)total_dtcm_cycles / TEST_ITERATIONS;
-    double avg_sram_cycles = (double)total_sram_cycles / TEST_ITERATIONS;
-    double avg_sdram_cycles = (double)total_sdram_cycles / TEST_ITERATIONS;
-    
-    /* 获取系统时钟频率 */
-    double sys_clk_mhz = (double)SystemCoreClock / 1000000.0;
-    double ns_per_cycle = 1000.0 / sys_clk_mhz;
-    
-    /* 输出结果 */
-    printf("\n=== Memory Latency Test Results ===\n");
-    printf("System Clock: %.2f MHz\n", sys_clk_mhz);
-    printf("Time per CPU cycle: %.2f ns\n", ns_per_cycle);
-    printf("\nDTCM SRAM:");
-    printf("\n  Average read latency: %.2f cycles (%.2f ns)\n", avg_dtcm_cycles, avg_dtcm_cycles * ns_per_cycle);
-    printf("SRAM:");
-    printf("\n  Average read latency: %.2f cycles (%.2f ns)\n", avg_sram_cycles, avg_sram_cycles * ns_per_cycle);
-    printf("SDRAM:");
-    printf("\n  Average read latency: %.2f cycles (%.2f ns)\n", avg_sdram_cycles, avg_sdram_cycles * ns_per_cycle);
-    printf("\nSDRAM latency is %.2f times higher than DTCM\n", avg_sdram_cycles / avg_dtcm_cycles);
-    printf("=====================================\n\n");
-    
-    /* 使用dummy变量防止编译器优化 */
-    if (dummy == 0) {}
-}
-
-//void HAL_SAI_RxCpltCallback(SAI_HandleTypeDef *hsai)
-//{
-//    if (hsai->Instance == SAI1_Block_A)
-//    {
-//        Process_PDM_To_PCM();  // 调用解码函数
-//    }
-//		//Start_PDM_Receive();
-//}
 
 /* USER CODE END 4 */
 

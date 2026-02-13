@@ -91,8 +91,8 @@ void Camera_PDRST_Init(){
 	
 
 		/*Turn off all LEDS*/	
-	HAL_GPIO_WritePin(LED_B_PORT,LED_B_PIN,LED_OFF);
-	HAL_GPIO_WritePin(LED_G_PORT,LED_G_PIN,LED_OFF);
+	//HAL_GPIO_WritePin(LED_B_PORT,LED_B_PIN,LED_OFF);
+	//HAL_GPIO_WritePin(LED_G_PORT,LED_G_PIN,LED_OFF);
 }
 	
 
@@ -132,7 +132,7 @@ void Tri_LED_Off(LEDs Color){
 */
 void MX_GPIO_Init(void)
 {
-GPIO_InitTypeDef GPIO_InitStruct = {0};
+
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOI_CLK_ENABLE();
   __HAL_RCC_GPIOG_CLK_ENABLE();
@@ -144,12 +144,6 @@ GPIO_InitTypeDef GPIO_InitStruct = {0};
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOF_CLK_ENABLE();
 
-  /* ??GPIOB_PIN_14??????? */
-  GPIO_InitStruct.Pin = GPIO_PIN_14;                  // ???????PB14??
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;         // ????,???????
-  GPIO_InitStruct.Pull = GPIO_NOPULL;                 // ????,????????
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;        // ????,????
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 }
 
 /* USER CODE BEGIN 2 */

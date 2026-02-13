@@ -1,0 +1,9 @@
+Build started: Project: TinyMLPT
+*** Using Compiler 'V6.22', folder: 'C:\Users\SheldonLiu\AppData\Local\Keil_v5\ARM\ARMCLANG\Bin'
+Build target 'TinyMLPT_CM7'
+Note: source file '../CM7/Core/Src/main.c' - object file renamed from 'TinyMLPT_CM7\main.o' to 'TinyMLPT_CM7\main_1.o'.Note: source file '../CM7/Core/Src/dma.c' - object file renamed from 'TinyMLPT_CM7\dma.o' to 'TinyMLPT_CM7\dma_1.o'.Note: source file '../CM7/Core/Src/usart.c' - object file renamed from 'TinyMLPT_CM7\usart.o' to 'TinyMLPT_CM7\usart_1.o'.Note: source file '../CM7/Core/Src/stm32h7xx_it.c' - object file renamed from 'TinyMLPT_CM7\stm32h7xx_it.o' to 'TinyMLPT_CM7\stm32h7xx_it_1.o'.Note: source file '../CM7/Core/Src/stm32h7xx_hal_msp.c' - object file renamed from 'TinyMLPT_CM7\stm32h7xx_hal_msp.o' to 'TinyMLPT_CM7\stm32h7xx_hal_msp_1.o'.compiling ov5640_dcmi_drv.c...
+linking...
+ÿProgram Size: Code=43192 RO-data=233064 RW-data=784 ZI-data=93880  
+þFromELF: creating hex file...
+ÿþ"TinyMLPT_CM7\TinyMLPT_CM7.axf" - 0 Error(s), 0 Warning(s).
+Build Time Elapsed:  00:00:01

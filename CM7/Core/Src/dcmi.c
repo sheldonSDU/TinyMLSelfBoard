@@ -21,6 +21,8 @@
 #include "dcmi.h"
 
 /* USER CODE BEGIN 0 */
+/***  Configuration of DCMI ***/ 
+
 
 /* USER CODE END 0 */
 
@@ -119,7 +121,7 @@ void HAL_DCMI_MspInit(DCMI_HandleTypeDef* dcmiHandle)
 
     /* DCMI DMA Init */
     /* DCMI Init */
-    hdma_dcmi.Instance = DMA1_Stream1;
+    hdma_dcmi.Instance = DMA2_Stream3;
     hdma_dcmi.Init.Request = DMA_REQUEST_DCMI;
     hdma_dcmi.Init.Direction = DMA_PERIPH_TO_MEMORY;
     hdma_dcmi.Init.PeriphInc = DMA_PINC_DISABLE;

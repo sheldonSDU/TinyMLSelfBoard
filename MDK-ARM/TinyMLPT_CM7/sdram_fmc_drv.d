@@ -1,4 +1,4 @@
-tinymlpt_cm7/sdram_fmc_drv.o: sdram_fmc_drv.c \
+tinymlpt_cm7/sdram_fmc_drv.o: ..\CM7\User\Src\sdram_fmc_drv.c \
   ..\CM7\Core\Inc\sdram_fmc_drv.h ..\CM7\Core\Inc\fmc.h \
   ..\CM7\Core\Inc\main.h \
   ..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal.h \

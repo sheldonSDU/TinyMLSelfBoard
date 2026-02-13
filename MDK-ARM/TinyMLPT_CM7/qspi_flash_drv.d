@@ -1,5 +1,5 @@
-tinymlpt_cm7/qspi_flash_drv.o: qspi_flash_drv.c \
-  ..\CM7\Core\Inc\qspi_flash_drv.h ..\CM7\Core\Inc\quadspi.h \
+tinymlpt_cm7/qspi_flash_drv.o: ..\CM7\User\Src\qspi_flash_drv.c \
+  ..\CM7\User\Inc\qspi_flash_drv.h ..\CM7\Core\Inc\quadspi.h \
   ..\CM7\Core\Inc\main.h \
   ..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal.h \
   ..\CM7\Core\Inc\stm32h7xx_hal_conf.h \

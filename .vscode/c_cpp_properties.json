@@ -3,7 +3,27 @@
     {
       "name": "windows-gcc-x64",
       "includePath": [
-        "${workspaceFolder}/**"
+        "${workspaceFolder}/**",
+        "d:\\ScholarStation\\SelfBoardProject\\CM4\\Core\\Inc",
+                "d:\\ScholarStation\\SelfBoardProject\\Drivers\\STM32H7xx_HAL_Driver\\Inc",
+                "d:\\ScholarStation\\SelfBoardProject\\Drivers\\STM32H7xx_HAL_Driver\\Inc\\Legacy",
+                "d:\\ScholarStation\\SelfBoardProject\\Drivers\\CMSIS\\Device\\ST\\STM32H7xx\\Include",
+                "d:\\ScholarStation\\SelfBoardProject\\Drivers\\CMSIS\\Include",
+                "C:\\Users\\SheldonLiu\\AppData\\Local\\Keil_v5\\ARM\\ARMCC\\include",
+                "d:\\ScholarStation\\SelfBoardProject\\MDK-ARM",
+                "d:\\ScholarStation\\SelfBoardProject\\CM4\\Core\\Src",
+                "d:\\ScholarStation\\SelfBoardProject\\CM7\\Core\\Src",
+                "d:\\ScholarStation\\SelfBoardProject\\BSP\\STM32H747I-Discovery",
+                "d:\\ScholarStation\\SelfBoardProject\\CM7\\Core\\Inc",
+                "d:\\ScholarStation\\SelfBoardProject\\CM7\\Core\\Src\\add_c",
+                "d:\\ScholarStation\\SelfBoardProject\\Drivers\\STM32H7xx_HAL_Driver\\Src",
+                "d:\\ScholarStation\\SelfBoardProject\\Common\\Src",
+                "d:\\ScholarStation\\SelfBoardProject\\Drivers\\CMSIS\\NN\\Source\\ActivationFunctions",
+                "d:\\ScholarStation\\SelfBoardProject\\Drivers\\CMSIS\\NN\\Source\\ConvolutionFunctions",
+                "d:\\ScholarStation\\SelfBoardProject\\Drivers\\CMSIS\\NN\\Source\\FullyConnectedFunctions",
+                "d:\\ScholarStation\\SelfBoardProject\\Drivers\\CMSIS\\NN\\Source\\NNSupportFunctions",
+                "d:\\ScholarStation\\SelfBoardProject\\Drivers\\CMSIS\\NN\\Source\\PoolingFunctions",
+                "d:\\ScholarStation\\SelfBoardProject\\Drivers\\CMSIS\\NN\\Source\\SoftmaxFunctions"
       ],
       "compilerPath": "C:/msys64/ucrt64/bin/gcc.exe",
       "cStandard": "${default}",

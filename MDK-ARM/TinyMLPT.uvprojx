@@ -585,29 +585,44 @@
           </GroupOption>
           <Files>
             <File>
-              <FileName>sdram_fmc_drv.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\sdram_fmc_drv.c</FilePath>
+              <FileName>genModel.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CM7\Core\Inc\genModel.h</FilePath>
             </File>
             <File>
-              <FileName>libPDMFilter_CM7_Keil_wc16.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\CM7\Core\Src\libPDMFilter_CM7_Keil_wc16.lib</FilePath>
+              <FileName>image_data.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CM7\Core\Inc\image_data.h</FilePath>
             </File>
             <File>
-              <FileName>microphone_sai_drv.c</FileName>
+              <FileName>arm_convolve_HWC_u8_u4_u4_icn.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\microphone_sai_drv.c</FilePath>
+              <FilePath>..\CM7\Core\Src\add_c\arm_convolve_HWC_u8_u4_u4_icn.c</FilePath>
             </File>
             <File>
-              <FileName>qspi_flash_drv.c</FileName>
+              <FileName>arm_u8_to_int16_reordered.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\qspi_flash_drv.c</FilePath>
+              <FilePath>..\CM7\Core\Src\add_c\arm_u8_to_int16_reordered.c</FilePath>
             </File>
             <File>
-              <FileName>ov2640_dcmi_drv.c</FileName>
+              <FileName>arm_nn_mat_mult_kernel_reordered_u4_int16_u4_icn.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\ov2640_dcmi_drv.c</FilePath>
+              <FilePath>..\CM7\Core\Src\add_c\arm_nn_mat_mult_kernel_reordered_u4_int16_u4_icn.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_depthwise_separable_conv_HWC_u4_u4_u4_icn.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CM7\Core\Src\add_c\arm_depthwise_separable_conv_HWC_u4_u4_u4_icn.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_convolve_HWC_u4_u4_u4_icn.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CM7\Core\Src\add_c\arm_convolve_HWC_u4_u4_u4_icn.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_u4_to_int16_reordered.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CM7\Core\Src\add_c\arm_u4_to_int16_reordered.c</FilePath>
             </File>
             <File>
               <FileName>main.c</FileName>
@@ -924,51 +939,21 @@
               <FileType>1</FileType>
               <FilePath>../CM7/Core/Src/stm32h7xx_hal_timebase_tim.c</FilePath>
             </File>
-            <File>
-              <FileName>genModel.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\CM7\Core\Inc\genModel.h</FilePath>
-            </File>
-            <File>
-              <FileName>image_data.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\CM7\Core\Inc\image_data.h</FilePath>
-            </File>
-            <File>
-              <FileName>arm_convolve_HWC_u8_u4_u4_icn.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\CM7\Core\Src\add_c\arm_convolve_HWC_u8_u4_u4_icn.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_u8_to_int16_reordered.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\CM7\Core\Src\add_c\arm_u8_to_int16_reordered.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_nn_mat_mult_kernel_reordered_u4_int16_u4_icn.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\CM7\Core\Src\add_c\arm_nn_mat_mult_kernel_reordered_u4_int16_u4_icn.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_depthwise_separable_conv_HWC_u4_u4_u4_icn.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\CM7\Core\Src\add_c\arm_depthwise_separable_conv_HWC_u4_u4_u4_icn.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_convolve_HWC_u4_u4_u4_icn.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\CM7\Core\Src\add_c\arm_convolve_HWC_u4_u4_u4_icn.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_u4_to_int16_reordered.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\CM7\Core\Src\add_c\arm_u4_to_int16_reordered.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>Drivers/STM32H7xx_HAL_Driver</GroupName>
           <Files>
+            <File>
+              <FileName>stm32h7xx_hal_tim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32h7xx_hal_tim_ex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.c</FilePath>
+            </File>
             <File>
               <FileName>stm32h7xx_hal_cortex.c</FileName>
               <FileType>1</FileType>
@@ -1109,6 +1094,174 @@
               <FileName>stm32h7xx_ll_fmc.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_fmc.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <uGnu>2</uGnu>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <v6Lto>2</v6Lto>
+                    <v6WtE>2</v6WtE>
+                    <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
+              <FileName>stm32h7xx_hal_nor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_nor.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <uGnu>2</uGnu>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <v6Lto>2</v6Lto>
+                    <v6WtE>2</v6WtE>
+                    <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
+              <FileName>stm32h7xx_hal_sram.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sram.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <uGnu>2</uGnu>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <v6Lto>2</v6Lto>
+                    <v6WtE>2</v6WtE>
+                    <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
+              <FileName>stm32h7xx_hal_nand.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_nand.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>2</UseCPPCompiler>
@@ -1384,16 +1537,6 @@
                   </Cads>
                 </FileArmAds>
               </FileOption>
-            </File>
-            <File>
-              <FileName>stm32h7xx_hal_tim.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32h7xx_hal_tim_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.c</FilePath>
             </File>
             <File>
               <FileName>stm32h7xx_hal_uart.c</FileName>
@@ -1684,6 +1827,56 @@
             </File>
           </Files>
         </Group>
+        <Group>
+          <GroupName>Application/User/Module</GroupName>
+          <Files>
+            <File>
+              <FileName>microphone_sai_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CM7\User\Src\microphone_sai_drv.c</FilePath>
+            </File>
+            <File>
+              <FileName>ov5640_dcmi_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CM7\User\Src\ov5640_dcmi_drv.c</FilePath>
+            </File>
+            <File>
+              <FileName>qspi_flash_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CM7\User\Src\qspi_flash_drv.c</FilePath>
+            </File>
+            <File>
+              <FileName>sdram_fmc_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CM7\User\Src\sdram_fmc_drv.c</FilePath>
+            </File>
+            <File>
+              <FileName>libPDMFilter_CM7_Keil_wc16.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>..\CM7\User\Src\libPDMFilter_CM7_Keil_wc16.lib</FilePath>
+            </File>
+            <File>
+              <FileName>stm32_pico_uart_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CM7\User\Src\stm32_pico_uart_drv.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Application/User/Components</GroupName>
+          <Files>
+            <File>
+              <FileName>ov5640.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CM7\Compoments\Src\ov5640.c</FilePath>
+            </File>
+            <File>
+              <FileName>ov5640_reg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CM7\Compoments\Src\ov5640_reg.c</FilePath>
+            </File>
+          </Files>
+        </Group>
       </Groups>
     </Target>
     <Target>
@@ -1791,11 +1984,11 @@
         </CommonProperty>
         <DllOption>
           <SimDllName>SARMCM3.DLL</SimDllName>
-          <SimDllArguments> -REMAP -MPU</SimDllArguments>
+          <SimDllArguments>-REMAP -MPU</SimDllArguments>
           <SimDlgDll>DCM.DLL</SimDlgDll>
           <SimDlgDllArguments>-pCM7</SimDlgDllArguments>
           <TargetDllName>SARMCM3.DLL</TargetDllName>
-          <TargetDllArguments> -MPU</TargetDllArguments>
+          <TargetDllArguments>-MPU</TargetDllArguments>
           <TargetDlgDll>TCM.DLL</TargetDlgDll>
           <TargetDlgDllArguments>-pCM7</TargetDlgDllArguments>
         </DllOption>
@@ -2021,7 +2214,7 @@
               <MiscControls>-include stdint.h</MiscControls>
               <Define>CORE_CM7,USE_HAL_DRIVER,STM32H747xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../CM7/Core/Inc;../Drivers/STM32H7xx_HAL_Driver/Inc;../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32H7xx/Include;../Drivers/CMSIS/Include;../BSP/STM32H747I-Discovery;..\Drivers\CMSIS\NN\Include;..\Drivers\CMSIS\DSP\Include;D:\Keil_v5\ARM\ARMCLANG\include</IncludePath>
+              <IncludePath>../CM7/Core/Inc;../Drivers/STM32H7xx_HAL_Driver/Inc;../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32H7xx/Include;../Drivers/CMSIS/Include;../BSP/STM32H747I-Discovery;../Drivers/CMSIS/NN/Include;../Drivers/CMSIS/DSP/Include;D:/Keil_v5/ARM/ARMCLANG/include;..\CM7\User\Inc;..\CM7\Compoments\Inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -2269,29 +2462,44 @@
           <GroupName>Application/User/CM7/Core</GroupName>
           <Files>
             <File>
-              <FileName>sdram_fmc_drv.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\sdram_fmc_drv.c</FilePath>
+              <FileName>genModel.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CM7\Core\Inc\genModel.h</FilePath>
             </File>
             <File>
-              <FileName>libPDMFilter_CM7_Keil_wc16.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\CM7\Core\Src\libPDMFilter_CM7_Keil_wc16.lib</FilePath>
+              <FileName>image_data.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CM7\Core\Inc\image_data.h</FilePath>
             </File>
             <File>
-              <FileName>microphone_sai_drv.c</FileName>
+              <FileName>arm_convolve_HWC_u8_u4_u4_icn.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\microphone_sai_drv.c</FilePath>
+              <FilePath>..\CM7\Core\Src\add_c\arm_convolve_HWC_u8_u4_u4_icn.c</FilePath>
             </File>
             <File>
-              <FileName>qspi_flash_drv.c</FileName>
+              <FileName>arm_u8_to_int16_reordered.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\qspi_flash_drv.c</FilePath>
+              <FilePath>..\CM7\Core\Src\add_c\arm_u8_to_int16_reordered.c</FilePath>
             </File>
             <File>
-              <FileName>ov2640_dcmi_drv.c</FileName>
+              <FileName>arm_nn_mat_mult_kernel_reordered_u4_int16_u4_icn.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\ov2640_dcmi_drv.c</FilePath>
+              <FilePath>..\CM7\Core\Src\add_c\arm_nn_mat_mult_kernel_reordered_u4_int16_u4_icn.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_depthwise_separable_conv_HWC_u4_u4_u4_icn.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CM7\Core\Src\add_c\arm_depthwise_separable_conv_HWC_u4_u4_u4_icn.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_convolve_HWC_u4_u4_u4_icn.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CM7\Core\Src\add_c\arm_convolve_HWC_u4_u4_u4_icn.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_u4_to_int16_reordered.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CM7\Core\Src\add_c\arm_u4_to_int16_reordered.c</FilePath>
             </File>
             <File>
               <FileName>main.c</FileName>
@@ -2608,51 +2816,21 @@
               <FileType>1</FileType>
               <FilePath>../CM7/Core/Src/stm32h7xx_hal_timebase_tim.c</FilePath>
             </File>
-            <File>
-              <FileName>genModel.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\CM7\Core\Inc\genModel.h</FilePath>
-            </File>
-            <File>
-              <FileName>image_data.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\CM7\Core\Inc\image_data.h</FilePath>
-            </File>
-            <File>
-              <FileName>arm_convolve_HWC_u8_u4_u4_icn.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\CM7\Core\Src\add_c\arm_convolve_HWC_u8_u4_u4_icn.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_u8_to_int16_reordered.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\CM7\Core\Src\add_c\arm_u8_to_int16_reordered.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_nn_mat_mult_kernel_reordered_u4_int16_u4_icn.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\CM7\Core\Src\add_c\arm_nn_mat_mult_kernel_reordered_u4_int16_u4_icn.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_depthwise_separable_conv_HWC_u4_u4_u4_icn.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\CM7\Core\Src\add_c\arm_depthwise_separable_conv_HWC_u4_u4_u4_icn.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_convolve_HWC_u4_u4_u4_icn.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\CM7\Core\Src\add_c\arm_convolve_HWC_u4_u4_u4_icn.c</FilePath>
-            </File>
-            <File>
-              <FileName>arm_u4_to_int16_reordered.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\CM7\Core\Src\add_c\arm_u4_to_int16_reordered.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>Drivers/STM32H7xx_HAL_Driver</GroupName>
           <Files>
+            <File>
+              <FileName>stm32h7xx_hal_tim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32h7xx_hal_tim_ex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.c</FilePath>
+            </File>
             <File>
               <FileName>stm32h7xx_hal_cortex.c</FileName>
               <FileType>1</FileType>
@@ -2793,6 +2971,174 @@
               <FileName>stm32h7xx_ll_fmc.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_fmc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32h7xx_hal_nor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_nor.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <uGnu>2</uGnu>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <v6Lto>2</v6Lto>
+                    <v6WtE>2</v6WtE>
+                    <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
+              <FileName>stm32h7xx_hal_sram.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sram.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <uGnu>2</uGnu>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <v6Lto>2</v6Lto>
+                    <v6WtE>2</v6WtE>
+                    <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
+              <FileName>stm32h7xx_hal_nand.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_nand.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>1</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <uGnu>2</uGnu>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <v6Lto>2</v6Lto>
+                    <v6WtE>2</v6WtE>
+                    <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
             </File>
             <File>
               <FileName>stm32h7xx_hal_sdram.c</FileName>
@@ -2966,16 +3312,6 @@
                   </Cads>
                 </FileArmAds>
               </FileOption>
-            </File>
-            <File>
-              <FileName>stm32h7xx_hal_tim.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32h7xx_hal_tim_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.c</FilePath>
             </File>
             <File>
               <FileName>stm32h7xx_hal_uart.c</FileName>
@@ -3161,6 +3497,56 @@
               <FileName>arm_softmax_q15.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Drivers\CMSIS\NN\Source\SoftmaxFunctions\arm_softmax_q15.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Application/User/Module</GroupName>
+          <Files>
+            <File>
+              <FileName>microphone_sai_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CM7\User\Src\microphone_sai_drv.c</FilePath>
+            </File>
+            <File>
+              <FileName>ov5640_dcmi_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CM7\User\Src\ov5640_dcmi_drv.c</FilePath>
+            </File>
+            <File>
+              <FileName>qspi_flash_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CM7\User\Src\qspi_flash_drv.c</FilePath>
+            </File>
+            <File>
+              <FileName>sdram_fmc_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CM7\User\Src\sdram_fmc_drv.c</FilePath>
+            </File>
+            <File>
+              <FileName>libPDMFilter_CM7_Keil_wc16.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>..\CM7\User\Src\libPDMFilter_CM7_Keil_wc16.lib</FilePath>
+            </File>
+            <File>
+              <FileName>stm32_pico_uart_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CM7\User\Src\stm32_pico_uart_drv.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Application/User/Components</GroupName>
+          <Files>
+            <File>
+              <FileName>ov5640.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CM7\Compoments\Src\ov5640.c</FilePath>
+            </File>
+            <File>
+              <FileName>ov5640_reg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CM7\Compoments\Src\ov5640_reg.c</FilePath>
             </File>
           </Files>
         </Group>

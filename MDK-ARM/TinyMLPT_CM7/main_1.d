@@ -36,13 +36,9 @@ tinymlpt_cm7/main_1.o: ..\CM7\Core\Src\main.c ..\CM7\Core\Inc\main.h \
   ..\CM7\Core\Inc\dcmi.h ..\CM7\Core\Inc\dma.h ..\CM7\Core\Inc\i2c.h \
   ..\CM7\Core\Inc\quadspi.h ..\CM7\Core\Inc\sai.h \
   ..\CM7\Core\Inc\usart.h ..\CM7\Core\Inc\gpio.h ..\CM7\Core\Inc\fmc.h \
-  ..\Drivers\CMSIS\NN\Include\arm_nnfunctions.h \
-  ..\Drivers\CMSIS\NN\Include\arm_nnsupportfunctions.h \
-  ..\Drivers\CMSIS\DSP\Include\arm_math.h \
+  ..\CM7\Core\Inc\sdram_fmc_drv.h ..\CM7\User\Inc\qspi_flash_drv.h \
+  ..\CM7\User\Inc\microphone_sai_drv.h ..\CM7\User\Inc\pdm2pcm_glo.h \
+  ..\CM7\User\Inc\ov5640_dcmi_drv.h \
+  ..\CM7\User\Inc\stm32_pico_uart_drv.h ..\CM7\Core\Inc\add_h\arm_math.h \
   ..\Drivers\CMSIS\Include\cmsis_compiler.h \
-  ..\Drivers\CMSIS\DSP\Include\arm_common_tables.h \
-  ..\Drivers\CMSIS\NN\Include\arm_nn_tables.h \
-  ..\CM7\Core\Inc\sdram_fmc_drv.h ..\CM7\Core\Inc\qspi_flash_drv.h \
-  ..\CM7\Core\Inc\microphone_sai_drv.h ..\CM7\Core\Inc\pdm2pcm_glo.h \
-  ..\CM7\Core\Inc\ov2640_dcmi_drv.h ..\CM7\Core\Inc\add_h\arm_math.h \
   ..\CM7\Core\Inc\add_h\genModel.h ..\CM7\Core\Inc\add_h\image_data.h

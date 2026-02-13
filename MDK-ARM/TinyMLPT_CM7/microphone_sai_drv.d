@@ -1,5 +1,5 @@
-tinymlpt_cm7/microphone_sai_drv.o: microphone_sai_drv.c \
-  ..\CM7\Core\Inc\microphone_sai_drv.h ..\CM7\Core\Inc\sai.h \
+tinymlpt_cm7/microphone_sai_drv.o: ..\CM7\User\Src\microphone_sai_drv.c \
+  ..\CM7\User\Inc\microphone_sai_drv.h ..\CM7\Core\Inc\sai.h \
   ..\CM7\Core\Inc\main.h \
   ..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal.h \
   ..\CM7\Core\Inc\stm32h7xx_hal_conf.h \
@@ -35,4 +35,4 @@ tinymlpt_cm7/microphone_sai_drv.o: microphone_sai_drv.c \
   ..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_tim_ex.h \
   ..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_uart.h \
   ..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_uart_ex.h \
-  ..\CM7\Core\Inc\pdm2pcm_glo.h
+  ..\CM7\User\Inc\pdm2pcm_glo.h

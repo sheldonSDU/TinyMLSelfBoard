@@ -21,15 +21,15 @@
 #include "usart.h"
 
 /* USER CODE BEGIN 0 */
-uint8_t dbg_rx_tmp_buf[DBG_TMP_RXBUFF_SIZE];     // 调试串口数据临时缓冲�?
-uint8_t dbg_rx_final_buf[DBG_FINAL_RXBUFF_SIZE]; //调试串口�?终数据缓冲区
+uint8_t dbg_rx_tmp_buf[DBG_TMP_RXBUFF_SIZE];     // 调试串口数据临时缓冲�?
+uint8_t dbg_rx_final_buf[DBG_FINAL_RXBUFF_SIZE]; //调试串口�?终数据缓冲区
 
 uint8_t wifi_rx_tmp_buf[DBG_TMP_RXBUFF_SIZE];     // 调试串口数据临时缓冲?
 uint8_t wifi_rx_final_buf[DBG_FINAL_RXBUFF_SIZE]; 
 
 uint8_t dbg_rx_size = 0;
 
-int half_flag = 0, full_flag = 0; // TEMP BUFFER 控制标志�?
+int half_flag = 0, full_flag = 0; // TEMP BUFFER 控制标志�?
 uint32_t final_index = 0;
 
 
@@ -242,7 +242,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     GPIO_InitStruct.Pin = GPIO_PIN_6|GPIO_PIN_7;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
     GPIO_InitStruct.Alternate = GPIO_AF7_USART1;
     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
@@ -360,7 +360,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 /* USER CODE BEGIN 1 */
 
 
-/* 接收逻辑中，无论是RXIDLE中断，还是DMA_HalfClp 还是DMA_Clp 都进入这个服�?*/
+/* 接收逻辑中，无论是RXIDLE中断，还是DMA_HalfClp 还是DMA_Clp 都进入这个服�?*/
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 {
   /*  */
